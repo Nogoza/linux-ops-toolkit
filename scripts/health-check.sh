@@ -12,6 +12,13 @@ if [[ ! "$threshold" =~ ^([1-9][0-9]?|100)$ ]]; then
     exit 2
 fi
 
+echo "Time: $(date -Iseconds)"
+echo "Host: $(hostname)"
+
+free -m | awk '/^Mem:/ {
+    printf "Memory (MiB): total=%s used=%s available=%s\n", $2, $3, $7
+}'
+
 disk_usage=$(df -P / | awk 'NR == 2 {gsub(/%/, "", $5); print $5}')
 
 if [ "$disk_usage" -ge "$threshold" ]; then
