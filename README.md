@@ -2,8 +2,8 @@
 
 A hands-on project for learning Linux operations and Bash automation.
 
-Status: initial disk usage checker implemented. Memory reporting and measurement
-failure handling are planned next.
+Status: disk, memory, hostname, and timestamp reporting implemented.
+Measurement failure handling is planned next.
 
 ## First milestone
 
@@ -15,7 +15,7 @@ then returns a meaningful exit status when disk usage exceeds a threshold.
 - [x] Root filesystem usage report
 - [x] Configurable disk usage threshold (default: 80%)
 - [x] Threshold argument validation and exit codes 0, 1, and 2
-- [ ] Memory, hostname, and timestamp report
+- [x] Memory, hostname, and timestamp report
 - [ ] Measurement failure handling
 - [ ] Service availability checks
 - [ ] Backup creation and verified restoration
