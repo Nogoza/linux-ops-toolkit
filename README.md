@@ -3,7 +3,7 @@
 A hands-on project for learning Linux operations and Bash automation.
 
 Status: disk, memory, hostname, and timestamp reporting implemented.
-Measurement failure handling is planned next.
+Failures in memory and disk measurement pipelines return exit code 3.
 
 ## First milestone
 
@@ -16,7 +16,7 @@ then returns a meaningful exit status when disk usage exceeds a threshold.
 - [x] Configurable disk usage threshold (default: 80%)
 - [x] Threshold argument validation and exit codes 0, 1, and 2
 - [x] Memory, hostname, and timestamp report
-- [ ] Measurement failure handling
+- [x] Handle failed memory and disk measurement commands
 - [ ] Service availability checks
 - [ ] Backup creation and verified restoration
 - [ ] Troubleshooting notes and reproducible examples
@@ -49,6 +49,7 @@ same measurement as Windows C: drive usage.
 | 0 | Disk usage is below the threshold |
 | 1 | Disk usage is at or above the threshold |
 | 2 | An invalid threshold or too many arguments were supplied |
+| 3 | A memory or disk measurement pipeline failed |
 
 ## Manual verification
 
@@ -65,8 +66,15 @@ Observed during the first exercise with root filesystem usage at 3%:
 | `101` | ERROR | 2 |
 | `80 extra` | ERROR | 2 |
 
-The valid-threshold results depend on the actual disk usage. These manual checks
-do not yet verify measurement-command failures or the exact equality boundary.
+The valid-threshold results depend on the actual disk usage.
+
+Memory and disk command failures were also injected separately using exported
+Bash functions in subshells. Each function returned 1 in place of the real
+`free` or `df` command. In both cases, the script printed the corresponding
+measurement error, returned 3, and did not print OK or WARNING.
+
+The exact equality boundary has not yet been tested. Successful commands that
+produce empty or malformed output are not yet validated by these checks.
 
 ## Project structure
 
