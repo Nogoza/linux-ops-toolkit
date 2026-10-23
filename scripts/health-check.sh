@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o pipefail
 
 if [ "$#" -gt 1 ]; then
     echo "ERROR: En fazla bir eşik argümanı verilebilir." >&2
@@ -15,11 +16,18 @@ fi
 echo "Time: $(date -Iseconds)"
 echo "Host: $(hostname)"
 
-free -m | awk '/^Mem:/ {
+if ! memory_report=$(free -m | awk '/^Mem:/ {
     printf "Memory (MiB): total=%s used=%s available=%s\n", $2, $3, $7
-}'
+}'); then
+    echo "ERROR: Bellek bilgisi alınamadı." >&2
+    exit 3
+fi
 
-disk_usage=$(df -P / | awk 'NR == 2 {gsub(/%/, "", $5); print $5}')
+echo "$memory_report"
+if ! disk_usage=$(df -P / | awk 'NR == 2 {gsub(/%/, "", $5); print $5}'); then
+	printf "ERROR: Disk bilgisi alınamadı. \n" >&2
+	exit 3
+fi
 
 if [ "$disk_usage" -ge "$threshold" ]; then
     echo "WARNING: Disk kullanımı %$disk_usage — eşik %$threshold"
