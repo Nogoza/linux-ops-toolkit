@@ -51,6 +51,22 @@ same measurement as Windows C: drive usage.
 | 2 | An invalid threshold or too many arguments were supplied |
 | 3 | A memory or disk measurement pipeline failed |
 
+## Automated tests
+
+Run from the project root:
+
+```bash
+bash tests/test-health-check.sh
+```
+
+The tests simulate `df` and `free` failures separately using exported Bash
+functions inside subshells. Each test checks that the health-check script
+returns 3 and does not print an OK or WARNING result.
+
+A successful run prints two PASS messages and returns 0. A failed assertion
+prints the captured output for diagnosis and returns 1. The tests stop at the
+first failed assertion.
+
 ## Manual verification
 
 Check syntax with `bash -n scripts/health-check.sh`. After each script execution,
@@ -80,6 +96,7 @@ produce empty or malformed output are not yet validated by these checks.
 
 ```text
 scripts/       Operational scripts
+tests/         Automated regression tests
 docs/          Tasks, learning notes, and troubleshooting records
 ```
 
