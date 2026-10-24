@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+health_script="${1:-scripts/health-check.sh}"
 
 output=$(
     df() {
@@ -7,8 +8,8 @@ output=$(
     }
 
     export -f df
+	bash "$health_script" 80 2>&1
 
-    bash scripts/health-check.sh 80 2>&1
 )
 result=$?
 
@@ -35,7 +36,7 @@ output=$(
 
     export -f free
 
-    bash scripts/health-check.sh 80 2>&1
+    bash "$health_script" 80 2>&1
 )
 result=$?
 
