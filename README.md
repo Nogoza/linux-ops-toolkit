@@ -67,6 +67,17 @@ A successful run prints two PASS messages and returns 0. A failed assertion
 prints the captured output for diagnosis and returns 1. The tests stop at the
 first failed assertion.
 
+An optional first argument selects another health-check implementation:
+
+```bash
+bash tests/test-health-check.sh /path/to/health-check.sh
+```
+
+Regression verification: testing the pre-fix script from commit `dfa54a0`
+failed at the disk measurement test and returned 1. That implementation
+incorrectly returned 0 after `df` failed. The current implementation passed
+both tests and the test suite returned 0.
+
 ## Manual verification
 
 Check syntax with `bash -n scripts/health-check.sh`. After each script execution,
